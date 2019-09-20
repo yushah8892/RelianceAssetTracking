@@ -12,7 +12,7 @@ node_modules
 
 # Ignore crypto-config folder
 crypto-config
-
+zk-single-kafka-single
 # Ignore bin
 bin
 
