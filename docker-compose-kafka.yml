@@ -1,0 +1,48 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+
+# NOTE: This is not the way a Kafka cluster would normally be deployed in production, as it is not secure
+# and is not fault tolerant. This example is a toy deployment that is only meant to exercise the Kafka code path
+# of the ordering service.
+
+version: '2'
+
+networks:
+  byfn:
+
+services:
+  zookeeper.reliance-network.com:
+    container_name:  zookeeper.reliance-network.com
+    image: hyperledger/fabric-zookeeper:$IMAGE_TAG
+    environment:
+      - ZOOKEEPER_CLIENT_PORT=2181
+      - ZOOKEEPER_TICK_TIME=2000
+      - ZOO_MY_ID=1
+    ports: 
+      - 2181:2181
+    networks:
+    - byfn
+
+  kafka.reliance-network.com:
+    container_name:  kafka.reliance-network.com
+    image: hyperledger/fabric-kafka:$IMAGE_TAG
+    depends_on:
+    - zookeeper.reliance-network.com
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper.reliance-network.com:2181
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka.reliance-network.com:9092
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_MESSAGE_MAX_BYTES=1048576 # 1 * 1024 * 1024 B
+      - KAFKA_REPLICA_FETCH_MAX_BYTES=1048576 # 1 * 1024 * 1024 B
+      - KAFKA_UNCLEAN_LEADER_ELECTION_ENABLE=false
+      - KAFKA_LOG_RETENTION_MS=-1
+      - KAFKA_MIN_INSYNC_REPLICAS=1
+      - KAFKA_DEFAULT_REPLICATION_FACTOR=1
+    ports: 
+     - 9092:9092 
+    networks:
+    - byfn
