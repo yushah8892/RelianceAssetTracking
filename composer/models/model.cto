@@ -2,13 +2,14 @@
 * Supply Chain Network : Model File
 */
 
-namespace org.upgrad.network
+namespace org.reliance.network
 
 /************** ABSTRACTS ******************/
 
 abstract participant Trader {
-  o String companyName
-  o Address address
+  o String email
+  o String address
+  o Double balance
 }
 
 /************** ENUMS ******************/
@@ -22,84 +23,131 @@ enum OrderStatus {
 
 /************** CONCEPTS ******************/
 
-concept Trace {
-  o DateTime timestamp
-  o Address location
-  --> Trader company
+
+
+enum AssetType {
+  o MEDICINE
+  o FUEL
+  o TRUCKS
+  o WIRES
+  o TABLES
+  o LAPTOP
+  o CHAIRS
 }
 
-concept Address {
-  o Double longtitude range=[-180.0, 180.0] optional
-  o Double latitude range=[-90.0, 90.0] optional
-  o String city optional
-  o String country optional
-  o String locality optional
-  o String region optional
-  o String street optional
-  o String postalCode optional
-  o String postOfficeBoxNumber optional
+enum ShipmentStatus {
+  o CREATED
+  o INTRANSIT
+  o ARRIVED
+}
+
+enum CompassDirection {
+  o N
+  o S
+  o E
+  o W
 }
 
 /************** ASSETS ******************/
-
-asset Commodity identified by tradingSymbol {
-  o String tradingSymbol
-  o String name
-  o String description
-  o Double quantity
-  o Double unitPrice optional
-  o Double totalPrice optional
-  o Trace[] trace
-  --> PO purchaseOrder optional
-  --> Trader owner optional
-  --> Trader issuer optional
+asset Shipment identified by shipmentId {
+  o String shipmentId 
+  o AssetType assetType
+  o ShipmentStatus status
+  o Long unitCount
+  --> Contract contract
+  o TemperatureReadingTx[] temparatureReading
+  o AccelerationReadingTx[] accelerationReading
+  o GpsReadingTx[] gpsReading
 }
 
-asset PO identified by orderId {
-  o String orderId
-  o Commodity[] itemList
-  o Double orderTotalPrice optional
-  o OrderStatus orderStatus optional
-  --> Trader orderer
-  --> Trader vendor
+
+asset Contract identified by contractId {
+  o String contractId
+  --> Exporter exporter
+  --> Importer importer
+  --> Shipper shipper
+  o DateTime arrivalTime
+  o Double unitPrice
+  o Double minTemparature
+  o Double MaxTemparature
+  o Double minPenaltyFactor 
+  o Double maxPenaltyFactor
+  o Double maxAcceleration
 }
+
 
 /************** PARTICIPANTS ******************/
 
-participant Supplier identified by traderId extends Trader {
-  o String traderId
+participant Exporter identified by exporterId extends Trader {
+  o String exporterId
 }
 
-participant Manufacturer identified by traderId extends Trader {
-  o String traderId
+participant Importer identified by importerId extends Trader {
+  o String importerId
 }
 
-participant Distributor identified by traderId extends Trader {
-  o String traderId
+participant Shipper identified by shipperId extends Trader{
+  o String shipperId
 }
 
-participant Retailer identified by traderId extends Trader {
-  o String traderId
+/************** EVENTS ******************/
+
+event TemparatureThreshold {
+  o Double temparature
+  o String message
+  o String latitude
+  o String longitude
+  o DateTime readingTime
+  o Shipment shipment
 }
 
-participant Customer identified by traderId extends Trader {
-  o String traderId
-}
+  event AccelerationThreshold {
+    o Double accelerationX
+    o Double accelerationY
+    o Double accelerationZ
+    o String message
+    o String latitude
+    o String longitude
+    o DateTime readingTime
+    o Shipment shipment
+  }
 
+  event ShipmentInPort {
+    o String message
+    o Shipment shipment
+  }
 /************** TRANSACTIONS ******************/
 
-@returns(Trader)
-transaction InitiatePO {
-  o String orderId
-  o Commodity[] itemList
-  o Double orderTotalPrice optional
-  --> Trader orderer optional
-  --> Trader vendor
+
+abstract transaction ShipmentTx {
+  --> Shipment shipment
 }
 
-transaction TransferCommodity {
-  --> Commodity commodity
-  --> Trader issuer
-  --> Trader newOwner
-  --> PO purchaseOrder optional
+transaction AccelerationReadingTx extends ShipmentTx {
+    o Double accelerationX
+    o Double accelerationY
+    o Double accelerationZ
+    o String latitude
+    o String longitude
+    o DateTime readingTime optional
+}
+
+transaction TemperatureReadingTx extends ShipmentTx  {
+  o Double celsius
+  o Double latitude
+  o Double longitude
+  o String readingTime optional
+}
+
+transaction GpsReadingTx extends ShipmentTx {
+  o String latitude
+  o CompassDirection latitudeDirection
+  o String longitude
+  o  CompassDirection longitudeDirection
+  o String readingTime optional
+  o String readingDate optional
+}
+
+transaction ShipmentReceived {
+  o Shipment shipment
 }

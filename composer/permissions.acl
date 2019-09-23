@@ -24,79 +24,71 @@ rule NetworkAdminSystem {
 
 rule ReadParticipants {
   	description: "All participants can read all participants"
-  	participant: "org.upgrad.network.*"
+  	participant: "org.reliance.network.*"
   	operation: READ
-    resource: "org.upgrad.network.Trader"
+    resource: "org.reliance.network.*"
   	action: ALLOW
 }
 
-rule ReadCommodity {
-  	description: "All participants can read their own commodities"
-  	participant(m): "org.upgrad.network.*"
-  	operation: READ
-    resource(v): "org.upgrad.network.Commodity"
-  	condition: (v.owner.getIdentifier() == m.getIdentifier())
+rule ExporterReadContracts {
+  	description: "All Exportes can read their own Contracts"
+  	participant(m): "org.reliance.network.Exporter"
+  	operation: ALL
+    resource(v): "org.reliance.network.Contract"
+  	condition: (v.contract.exporter.getIdentifier() == m.getIdentifier())
   	action: ALLOW
 }
 
-rule VendorReadPO {
-  	description: "All vendors can read their own POs"
-  	participant(m): "org.upgrad.network.*"
-  	operation: READ
-    resource(v): "org.upgrad.network.PO"
-  	condition: (v.vendor.getIdentifier() == m.getIdentifier())
+
+rule ExporterReadShipment {
+  	description: "All Exportes can see their own Shipment"
+  	participant(m): "org.reliance.network.Exporter"
+  	operation: ALL
+    resource(v): "org.reliance.network.Shipment"
+  	condition: (v.shipment.getIdentifier() == m.getIdentifier())
   	action: ALLOW
 }
 
-rule ordererReadPO {
-  	description: "All orderers can read their own POs"
-  	participant(m): "org.upgrad.network.*"
-  	operation: READ
-	resource(v): "org.upgrad.network.PO"
-  	condition: (v.orderer.getIdentifier() == m.getIdentifier())
+rule ImporterReadContracts {
+  	description: "All Importer can read their own Contracts"
+  	participant(m): "org.reliance.network.Importer"
+  	operation: ALL
+    resource(v): "org.reliance.network.Contract"
+  	condition: (v.contract.importer.getIdentifier() == m.getIdentifier())
   	action: ALLOW
 }
 
-rule CreateTransferTx {
-    description: "Allow all paticipants to create TransferCommodity transactions"
-    participant: "org.upgrad.network.*"
-    operation: CREATE
-    resource: "org.upgrad.network.TransferCommodity"
-    action: ALLOW
-}
 
-rule UpdateTransferTx {
-    description:"Allow all paticipants to transfer only their own commodities"
-    participant(m): "org.upgrad.network.*"
-    operation: UPDATE
-    resource(v): "org.upgrad.network.*"
-    transaction(tx): "org.upgrad.network.TransferCommodity"
-    condition: (v.owner.getIdentifier() == m.getIdentifier())
-    action: ALLOW
-}
-
-rule IssuerReadTransferTx {
-  	description:"Allow all paticipants to read their issued transaction records"
-    participant(m): "org.upgrad.network.*"
-    operation: READ
-    resource(v): "org.upgrad.network.TransferCommodity"
-    condition: (v.issuer.getIdentifier() == m.getIdentifier())
-    action: ALLOW
-}
-
-rule OwnerReadTransferTx {
-    description:"Allow all participants to read their own transaction records"
-    participant(m): "org.upgrad.network.*"
-    operation: READ
-    resource(v): "org.upgrad.network.TransferCommodity"
-    condition: (v.newOwner.getIdentifier() == m.getIdentifier())
-    action: ALLOW
-}
-
-rule ConditionalRuleWithCreation {
-    description: "Allow all participants to create their own resource"
-    participant: "org.upgrad.network.*"
-    operation: CREATE
-    resource: "org.upgrad.network.*"
+rule ImporterReadShipment {
+  	description: "All Importer can see their own Shipment"
+  	participant(m): "org.reliance.network.Importer"
+  	operation: ALL
+    resource(v): "org.reliance.network.Shipment"
+  	condition: (v.shipment.getIdentifier() == m.getIdentifier())
   	action: ALLOW
+}
+
+rule ShipperReadContracts {
+  	description: "All Shipper can read their own Contracts"
+  	participant(m): "org.reliance.network.Shipper"
+  	operation: ALL
+    resource(v): "org.reliance.network.Contract"
+  	condition: (v.contract.exporter.getIdentifier() == m.getIdentifier())
+  	action: ALLOW
+}
+rule ShipperReadShipment {
+  	description: "All Shipper can see their own Shipment"
+  	participant(m): "org.reliance.network.Shipper"
+  	operation: ALL
+    resource(v): "org.reliance.network.Shipment"
+  	condition: (m.getIdentifier() == v.contract.exporter.getIdentifier())
+  	action: ALLOW
+}
+
+rule AllUserTransaction {
+  description: "All users can run all the transactions"
+  participant: "org.reliance.network.**"
+  operation: ALL
+  resource: "org.hyperledger.composer.system.Transaction"
+  action: ALLOW
 }
