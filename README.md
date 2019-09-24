@@ -1,4 +1,4 @@
-# Eeliance Asset Tracking System
+# Reliance Asset Tracking System
 Sample code to test Hyperledger Composer .bna deployment over Hyperledger Fabric network
 
 ## Fabric Network
