@@ -1,8 +1,8 @@
-# upgrad-network
+# Eeliance Asset Tracking System
 Sample code to test Hyperledger Composer .bna deployment over Hyperledger Fabric network
 
 ## Fabric Network
-- 3 Orgs
+- 5 Orgs
 - TLS Enabled
 - 2 Peers per org
 
