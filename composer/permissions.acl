@@ -45,7 +45,7 @@ rule ExporterReadShipment {
   	participant(m): "org.reliance.network.Exporter"
   	operation: ALL
     resource(v): "org.reliance.network.Shipment"
-  	condition: (v.shipment.getIdentifier() == m.getIdentifier())
+  	condition: (v.shipment.exporter.getIdentifier() == m.getIdentifier())
   	action: ALLOW
 }
 
@@ -64,7 +64,7 @@ rule ImporterReadShipment {
   	participant(m): "org.reliance.network.Importer"
   	operation: ALL
     resource(v): "org.reliance.network.Shipment"
-  	condition: (v.shipment.getIdentifier() == m.getIdentifier())
+  	condition: (v.shipment.importer.getIdentifier() == m.getIdentifier())
   	action: ALLOW
 }
 
@@ -73,7 +73,7 @@ rule ShipperReadContracts {
   	participant(m): "org.reliance.network.Shipper"
   	operation: ALL
     resource(v): "org.reliance.network.Contract"
-  	condition: (v.contract.exporter.getIdentifier() == m.getIdentifier())
+  	condition: (v.contract.shipper.getIdentifier() == m.getIdentifier())
   	action: ALLOW
 }
 rule ShipperReadShipment {
@@ -81,8 +81,40 @@ rule ShipperReadShipment {
   	participant(m): "org.reliance.network.Shipper"
   	operation: ALL
     resource(v): "org.reliance.network.Shipment"
-  	condition: (m.getIdentifier() == v.contract.exporter.getIdentifier())
+  	condition: (m.getIdentifier() == v.contract.shipper.getIdentifier())
   	action: ALLOW
+}
+rule ImporterUpdateBalance {
+  	description: "All Importer can update their Balances"
+  	participant(m): "org.reliance.network.Importer"
+  	operation: UPDATE
+    resource(v): "org.reliance.network.Importer"
+  	condition: (m.getIdentifier() == v.getIdentifier())
+  	action: ALLOW
+}
+
+rule ExporterUpdateBalance {
+  	description: "All Importer can update Exporter Balances"
+  	participant: "org.reliance.network.Importer"
+  	operation: UPDATE
+    resource: "org.reliance.network.Exporter"
+    action: ALLOW
+}
+
+rule ShipperUpdateBalance {
+  	description: "All Importer can update Shipper Balances"
+  	participant: "org.reliance.network.Importer"
+  	operation: UPDATE
+    resource: "org.reliance.network.Shipper"
+  	action: ALLOW
+}
+
+rule ImporterUpdateShipment {
+  	description: "All Importer can update shipment"
+  	participant: "org.reliance.network.Importer"
+  	operation: UPDATE
+    resource: "org.reliance.network.Shipment"
+    action: ALLOW
 }
 
 rule AllUserTransaction {

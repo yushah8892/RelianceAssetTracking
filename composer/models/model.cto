@@ -55,9 +55,9 @@ asset Shipment identified by shipmentId {
   o ShipmentStatus status
   o Long unitCount
   --> Contract contract
-  o TemperatureReadingTx[] temparatureReading
-  o AccelerationReadingTx[] accelerationReading
-  o GpsReadingTx[] gpsReading
+  o Transaction[] temparatureReading
+  o Transaction[] accelerationReading
+  o Transaction[] gpsReading
 }
 
 
@@ -149,5 +149,5 @@ transaction GpsReadingTx extends ShipmentTx {
 }
 
 transaction ShipmentReceived {
-  o Shipment shipment
+  --> Shipment shipment
 }
