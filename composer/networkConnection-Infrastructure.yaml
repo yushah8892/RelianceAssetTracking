@@ -1,0 +1,250 @@
+---
+#
+# The network connection profile provides client applications the information about the target
+# blockchain network that are necessary for the applications to interact with it. These are all
+# knowledge that must be acquired from out-of-band sources. This file provides such a source.
+#
+name: "relianceassettracking_byfn"
+
+x-type: "hlfv1"
+
+description: "Reliance Network"
+
+version: "1.0"
+
+client:
+  organization: Infrastructure
+  connection:
+    timeout:
+      peer:
+        endorser: 3000
+        eventHub: 3000
+        eventReg: 3000
+      orderer: 3000
+
+channels:
+  channelfiveorgs:
+    orderers:
+      - orderer.reliance-network.com
+    peers:
+      peer0.Infrastructure.reliance-network.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+      peer1.Infrastructure.reliance-network.com:
+        endorsingPeer: false
+        chaincodeQuery: false
+        ledgerQuery: true
+        eventSource: false
+      peer0.Power.reliance-network.com:
+        endorsingPeer: false
+        chaincodeQuery: false
+        ledgerQuery: true
+        eventSource: false
+      peer1.Power.reliance-network.com:
+        endorsingPeer: false
+        chaincodeQuery: false
+        ledgerQuery: true
+        eventSource: false
+      peer0.Communications.reliance-network.com:
+        endorsingPeer: false
+        chaincodeQuery: false
+        ledgerQuery: true
+        eventSource: false
+      peer1.Communications.reliance-network.com:
+        endorsingPeer: false
+        chaincodeQuery: false
+        ledgerQuery: true
+        eventSource: false
+      peer0.Entertainment.reliance-network.com:
+        endorsingPeer: false
+        chaincodeQuery: false
+        ledgerQuery: true
+        eventSource: false
+      peer1.Entertainment.reliance-network.com:
+        endorsingPeer: false
+        chaincodeQuery: false
+        ledgerQuery: true
+        eventSource: false
+      peer0.Capital.reliance-network.com:
+        endorsingPeer: false
+        chaincodeQuery: false
+        ledgerQuery: true
+        eventSource: false
+      peer1.Capital.reliance-network.com:
+        endorsingPeer: false
+        chaincodeQuery: false
+        ledgerQuery: true
+        eventSource: false
+organizations:
+  Infrastructure:
+    mspid: InfrastructureMSP
+    peers:
+      - peer0.Infrastructure.reliance-network.com
+      - peer1.Infrastructure.reliance-network.com
+    certificateAuthorities:
+      - ca.Infrastructure.reliance-network.com
+  Power:
+    mspid: PowerMSP
+    peers:
+      - peer0.Power.reliance-network.com
+      - peer1.Power.reliance-network.com
+    certificateAuthorities:
+      - ca.Power.reliance-network.com
+  Communications:
+    mspid: CommunicationsMSP
+    peers:
+      - peer0.Communications.reliance-network.com
+      - peer1.Communications.reliance-network.com
+    certificateAuthorities:
+      - ca.Communications.reliance-network.com
+  Entertainment:
+    mspid: EntertainmentMSP
+    peers:
+      - peer0.Entertainment.reliance-network.com
+      - peer1.Entertainment.reliance-network.com
+    certificateAuthorities:
+      - ca.Entertainment.reliance-network.com
+  Capital:
+    mspid: CapitalMSP
+    peers:
+      - peer0.Capital.reliance-network.com
+      - peer1.Capital.reliance-network.com
+    certificateAuthorities:
+      - ca.Capital.reliance-network.com      
+orderers:
+  orderer.reliance-network.com:
+    url: grpcs://localhost:7050
+    grpcOptions:
+      ssl-target-name-override: orderer.reliance-network.com
+    tlsCACerts:
+      path: /home/yash/workspace/fabric-samples/relianceAssetTracking/crypto-config/ordererOrganizations/reliance-network.com/orderers/orderer.reliance-network.com/msp/tlscacerts/tlsca.reliance-network.com-cert.pem
+
+peers:
+  peer0.Infrastructure.reliance-network.com:
+    url: grpcs://localhost:7051
+    grpcOptions:
+      ssl-target-name-override: peer0.Infrastructure.reliance-network.com
+      request-timeout: 120001
+    tlsCACerts:
+      path: /home/yash/workspace/fabric-samples/relianceAssetTracking/crypto-config/peerOrganizations/Infrastructure.reliance-network.com/peers/peer0.Infrastructure.reliance-network.com/msp/tlscacerts/tlsca.Infrastructure.reliance-network.com-cert.pem
+  peer1.Infrastructure.reliance-network.com:
+    url: grpcs://localhost:8051
+    grpcOptions:
+      ssl-target-name-override: peer1.Infrastructure.reliance-network.com
+      request-timeout: 120001
+    tlsCACerts:
+      path: /home/yash/workspace/fabric-samples/relianceAssetTracking/crypto-config/peerOrganizations/Infrastructure.reliance-network.com/peers/peer1.Infrastructure.reliance-network.com/msp/tlscacerts/tlsca.Infrastructure.reliance-network.com-cert.pem
+  peer0.Power.reliance-network.com:
+    url: grpcs://localhost:9051
+    grpcOptions:
+      ssl-target-name-override: peer0.Power.reliance-network.com
+      request-timeout: 120001
+    tlsCACerts:
+      path: /home/yash/workspace/fabric-samples/relianceAssetTracking/crypto-config/peerOrganizations/Power.reliance-network.com/peers/peer0.Power.reliance-network.com/msp/tlscacerts/tlsca.Power.reliance-network.com-cert.pem
+  peer1.Power.reliance-network.com:
+    url: grpcs://localhost:10051
+    grpcOptions:
+      ssl-target-name-override: peer1.Power.reliance-network.com
+      request-timeout: 120001
+    tlsCACerts:
+      path: /home/yash/workspace/fabric-samples/relianceAssetTracking/crypto-config/peerOrganizations/Power.reliance-network.com/peers/peer1.Power.reliance-network.com/msp/tlscacerts/tlsca.Power.reliance-network.com-cert.pem
+  peer0.Communications.reliance-network.com:
+    url: grpcs://localhost:11051
+    grpcOptions:
+      ssl-target-name-override: peer0.Communications.reliance-network.com
+      request-timeout: 120001
+    tlsCACerts:
+      path: /home/yash/workspace/fabric-samples/relianceAssetTracking/crypto-config/peerOrganizations/Communications.reliance-network.com/peers/peer0.Communications.reliance-network.com/msp/tlscacerts/tlsca.Communications.reliance-network.com-cert.pem
+  peer1.Communications.reliance-network.com:
+    url: grpcs://localhost:12051
+    grpcOptions:
+      ssl-target-name-override: peer1.Communications.reliance-network.com
+      request-timeout: 120001
+    tlsCACerts:
+      path: /home/yash/workspace/fabric-samples/relianceAssetTracking/crypto-config/peerOrganizations/Communications.reliance-network.com/peers/peer1.Communications.reliance-network.com/msp/tlscacerts/tlsca.Communications.reliance-network.com-cert.pem
+
+peer0.Entertainment.reliance-network.com:
+    url: grpcs://localhost:13051
+    grpcOptions:
+      ssl-target-name-override: peer0.Entertainment.reliance-network.com
+      request-timeout: 120001
+    tlsCACerts:
+      path: /home/yash/workspace/fabric-samples/relianceAssetTracking/crypto-config/peerOrganizations/Entertainment.reliance-network.com/peers/peer0.Entertainment.reliance-network.com/msp/tlscacerts/tlsca.Entertainment.reliance-network.com-cert.pem
+peer1.Entertainment.reliance-network.com:
+    url: grpcs://localhost:14051
+    grpcOptions:
+      ssl-target-name-override: peer1.Entertainment.reliance-network.com
+      request-timeout: 120001
+    tlsCACerts:
+      path: /home/yash/workspace/fabric-samples/relianceAssetTracking/crypto-config/peerOrganizations/Entertainment.reliance-network.com/peers/peer1.Entertainment.reliance-network.com/msp/tlscacerts/tlsca.Entertainment.reliance-network.com-cert.pem
+
+
+peer0.Capital.reliance-network.com:
+    url: grpcs://localhost:15051
+    grpcOptions:
+      ssl-target-name-override: peer0.Capital.reliance-network.com
+      request-timeout: 120001
+    tlsCACerts:
+      path: /home/yash/workspace/fabric-samples/relianceAssetTracking/crypto-config/peerOrganizations/Capital.reliance-network.com/peers/peer0.Capital.reliance-network.com/msp/tlscacerts/tlsca.Capital.reliance-network.com-cert.pem
+peer1.Capital.reliance-network.com:
+    url: grpcs://localhost:16051
+    grpcOptions:
+      ssl-target-name-override: peer1.Communications.reliance-network.com
+      request-timeout: 120001
+    tlsCACerts:
+      path: /home/yash/workspace/fabric-samples/relianceAssetTracking/crypto-config/peerOrganizations/Capital.reliance-network.com/peers/peer1.Capital.reliance-network.com/msp/tlscacerts/tlsca.Capital.reliance-network.com-cert.pem
+
+
+certificateAuthorities:
+  ca.Infrastructure.reliance-network.com:
+    url: https://localhost:7054
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: /home/yash/workspace/fabric-samples/relianceAssetTracking/crypto-config/peerOrganizations/Infrastructure.reliance-network.com/ca/ca.Infrastructure.reliance-network.com-cert.pem
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    caName: ca.Infrastructure.reliance-network.com
+  ca.Power.reliance-network.com:
+    url: https://localhost:8054
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: /home/yash/workspace/fabric-samples/relianceAssetTracking/crypto-config/peerOrganizations/Power.reliance-network.com/ca/ca.Power.reliance-network.com-cert.pem
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    caName: ca.Power.reliance-network.com
+  ca.Communications.reliance-network.com:
+    url: https://localhost:9054
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: /home/yash/workspace/fabric-samples/relianceAssetTracking/crypto-config/peerOrganizations/Communications.reliance-network.com/ca/ca.Communications.reliance-network.com-cert.pem
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    caName: ca.Communications.reliance-network.com
+  ca.Entertainment.reliance-network.com:
+    url: https://localhost:10054
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: /home/yash/workspace/fabric-samples/relianceAssetTracking/crypto-config/peerOrganizations/Entertainment.reliance-network.com/ca/ca.Entertainment.reliance-network.com-cert.pem
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    caName: ca.Entertainment.reliance-network.com
+  ca.Capital.reliance-network.com:
+    url: https://localhost:11054
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: /home/yash/workspace/fabric-samples/relianceAssetTracking/crypto-config/peerOrganizations/Capital.reliance-network.com/ca/ca.Capital.reliance-network.com-cert.pem
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    caName: ca.Capital.reliance-network.com

@@ -2,12 +2,12 @@
 	"engines": {
 		"composer": "^0.20.8"
 	},
-	"name": "upgradnetworkmaster",
-	"author": "Aakash Bansal",
-	"description": "Upgrad Network",
+	"name": "relianceassettracking",
+	"author": "Yash Shah",
+	"description": "Reliance Network",
 	"version": "0.0.1",
 	"scripts": {
-		"prepublish": "mkdir ./dist && composer archive create --sourceType dir --sourceName . -a ./dist/upgrad-network.bna",
+		"prepublish": "mkdir ./dist && composer archive create --sourceType dir --sourceName . -a ./dist/reliance-network.bna",
 		"pretest": "npm run lint",
 		"lint": "eslint ."
 	},

@@ -20,7 +20,7 @@ services:
     environment:
       - ZOOKEEPER_CLIENT_PORT=2181
       - ZOOKEEPER_TICK_TIME=2000
-      - ZOO_MY_ID=1
+      - ZOO_MY_ID=2
     ports: 
       - 2181:2181
     networks:
@@ -32,7 +32,7 @@ services:
     depends_on:
     - zookeeper.reliance-network.com
     environment:
-      - KAFKA_BROKER_ID=1
+      - KAFKA_BROKER_ID=2
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper.reliance-network.com:2181
       - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka.reliance-network.com:9092
       - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1

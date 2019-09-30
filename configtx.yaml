@@ -29,7 +29,7 @@ Organizations:
         Type: Signature
         Rule: "OR('InfrastructureMSP.admin', 'InfrastructureMSP.peer', 'InfrastructureMSP.client')"
     AnchorPeers:
-      - Host: peer0.infrastructure.reliance-network.com
+      - Host: peer0.Infrastructure.reliance-network.com
         Port: 7051
 
   - &Power
@@ -47,7 +47,7 @@ Organizations:
         Type: Signature
         Rule: "OR('PowerMSP.admin', 'PowerMSP.peer', 'PowerMSP.client')"
     AnchorPeers:
-      - Host: peer0.power.reliance-network.com
+      - Host: peer0.Power.reliance-network.com
         Port: 9051
 
   - &Communications
@@ -65,7 +65,7 @@ Organizations:
         Type: Signature
         Rule: "OR('CommunicationsMSP.admin', 'CommunicationsMSP.peer', 'CommunicationsMSP.client')"
     AnchorPeers:
-      - Host: peer0.communications.reliance-network.com
+      - Host: peer0.Communications.reliance-network.com
         Port: 11051
 
   - &Entertainment
@@ -83,7 +83,7 @@ Organizations:
         Type: Signature
         Rule: "OR('EntertainmentMSP.admin', 'EntertainmentMSP.peer', 'EntertainmentMSP.client')"
     AnchorPeers:
-      - Host: peer0.entertainment.reliance-network.com
+      - Host: peer0.Entertainment.reliance-network.com
         Port: 13051
 
   - &Capital
@@ -101,7 +101,7 @@ Organizations:
         Type: Signature
         Rule: "OR('CapitalMSP.admin', 'CapitalMSP.peer', 'CapitalMSP.client')"
     AnchorPeers:
-      - Host: peer0.capital.reliance-network.com
+      - Host: peer0.Capital.reliance-network.com
         Port: 15051
 
 #Capabilities

@@ -128,7 +128,7 @@ function networkUp() {
   fi
   if [ "${IF_COUCHDB}" == "couchdb" ]; then
     if [ "$CONSENSUS_TYPE" == "kafka" ]; then
-      IMAGE_TAG=$IMAGETAG docker-compose -f "$COMPOSE_FILE" -f "$COMPOSE_FILE_KAFKA" -f "$COMPOSE_FILE_COUCHDB" up -d 2>&1
+      IMAGE_TAG=$IMAGETAG docker-compose -f "$COMPOSE_FILE" -f "$COMPOSE_FILE_KAFKA" up -d 2>&1
       docker ps -a
     elif [ "$CONSENSUS_TYPE" == "etcdraft" ]; then
       IMAGE_TAG=$IMAGETAG docker-compose -f "$COMPOSE_FILE" -f "$COMPOSE_FILE_RAFT2" up -d 2>&1
@@ -198,68 +198,68 @@ function setupComposer() {
   cd "$CURRENT_DIR" || exit
   PRIVATE_KEY=./crypto-config/peerOrganizations/Infrastructure.reliance-network.com/users/Admin@Infrastructure.reliance-network.com/msp/keystore/"${PRIV_KEY}"
   CERT=./crypto-config/peerOrganizations/Infrastructure.reliance-network.com/users/Admin@Infrastructure.reliance-network.com/msp/signcerts/Admin@Infrastructure.reliance-network.com-cert.pem
-  CARDOUTPUT=PeerAdmin@upgrad-network-Infrastructure.card
+  CARDOUTPUT=PeerAdmin@reliance-network-Infrastructure.card
 
   # Create a new business network card for the administrator to use to deploy the composer business network to fabric network
   # TODO: Repeat this step for all organizations
   composer card create -p "$CONNECTION_PROFILE" -u PeerAdmin -c "$CERT" -k "$PRIVATE_KEY" -r PeerAdmin -r ChannelAdmin -f "$CARDOUTPUT"
 
   # Check if a card with the same name has previously been imported? If yes, remove it before importing a new one.
-  if composer card list -c PeerAdmin@upgrad-network-Infrastructure >/dev/null; then
-    composer card delete -c PeerAdmin@upgrad-network-Infrastructure
+  if composer card list -c PeerAdmin@reliance-network-Infrastructure >/dev/null; then
+    composer card delete -c PeerAdmin@reliance-network-Infrastructure
   fi
 
   # Import the business network card for Infrastructure into the wallet
   # TODO: Repeat this step for all organizations
-  composer card import -f PeerAdmin@upgrad-network-Infrastructure.card --card PeerAdmin@upgrad-network-Infrastructure
+  composer card import -f PeerAdmin@reliance-network-Infrastructure.card --card PeerAdmin@reliance-network-Infrastructure
   composer card list
-  echo "Hyperledger Composer PeerAdmin@upgrad-network-Infrastructure card has been imported"
+  echo "Hyperledger Composer PeerAdmin@reliance-network-Infrastructure card has been imported"
 
   # Remove the card file from filesystem after card has been imported to wallet
   # TODO: Repeat this step for all organizations
-  rm PeerAdmin@upgrad-network-Infrastructure.card
+  rm PeerAdmin@reliance-network-Infrastructure.card
 
   # Create a composer business network archive (bna) based on the model and script file
   cd ./composer || exit
-  composer archive create -t dir -n . -a dist/upgrad-network.bna
+  composer archive create -t dir -n . -a dist/reliance-network.bna
 
   # Install the composer business network on fabric peer nodes for Infrastructure
   # TODO: Repeat this step to install composer BBN on peers of all organizations
-  composer network install --card PeerAdmin@upgrad-network-Infrastructure --archiveFile ./dist/upgrad-network.bna
+  composer network install --card PeerAdmin@reliance-network-Infrastructure --archiveFile ./dist/reliance-network.bna
 
   # Retrieve certificates for a user [Aakash] to use as the business network administrator for Infrastructure
   # TODO: Retrieve certificates for administrators of all organizations
-  composer identity request -c PeerAdmin@upgrad-network-Infrastructure -u admin -s adminpw -d aakash
+  composer identity request -c PeerAdmin@reliance-network-Infrastructure -u admin -s adminpw -d aakash
 
   # Start the business network with user [Aakash] from Infrastructure as the administrator allowing him to add new participants from their orgs.
   # TODO: Add the administrators from other orgs to this command
-  composer network start -c PeerAdmin@upgrad-network-Infrastructure -n upgradnetworkmaster -V 0.0.1  -o endorsementPolicyFile=./endorsement-policy.json -A aakash -C aakash/admin-pub.pem
+  composer network start -c PeerAdmin@reliance-network-Infrastructure -n relianceassettracking -V 0.0.1  -o endorsementPolicyFile=./endorsement-policy.json -A aakash -C aakash/admin-pub.pem
 
   # Create a business network card that Aakash can use to access the business network on behalf of Infrastructure
-  composer card create -p ./../"$CONNECTION_PROFILE" -u aakash -n upgradnetworkmaster -c aakash/admin-pub.pem -k aakash/admin-priv.pem
+  composer card create -p ./../"$CONNECTION_PROFILE" -u aakash -n relianceassettracking -c aakash/admin-pub.pem -k aakash/admin-priv.pem
 
   # Check if a card with the same name has previously been imported? If yes, remove it before importing a new one.
-  if composer card list -c aakash@upgrad-network >/dev/null; then
-    composer card delete -c aakash@upgrad-network
+  if composer card list -c aakash@relianceassettracking.card >/dev/null; then
+    composer card delete -c aakash@relianceassettracking.card
   fi
 
   # Import the business network card into wallet for Infrastructure admin user [Aakash]
-  composer card import -f aakash@upgrad-network.card
+  composer card import -f aakash@relianceassettracking.card --card aakash@relianceassettracking
 
   # Ping the network using this card just created
-  composer network ping -c aakash@upgrad-network
+  composer network ping -c aakash@relianceassettracking.card
 
   # Add a new participant (Infrastructure Pay) as a Manufacturer to the business network
-  composer participant add -c aakash@upgrad-network -d '{"$class":"org.upgrad.network.Manufacturer","traderId":"1290", "companyName":"Infrastructure Pay", "address": {"$class": "org.upgrad.network.Address"}}'
+  #composer participant add -c aakash@reliance-network -d '{"$class":"org.reliance.network.Manufacturer","traderId":"1290", "companyName":"Infrastructure Pay", "address": {"$class": "org.upgrad.network.Address"}}'
 
   # Issue a new identity for the Infrastructure Pay manufacturer
-  composer identity issue -c aakash@upgrad-network -f apay.card -u apay -a "resource:org.upgrad.network.Manufacturer#1290"
+  #composer identity issue -c aakash@reliance-network -f apay.card -u apay -a "resource:org.reliance.network.Manufacturer#1290"
 
   # Import the card for new Infrastructure Pay user into wallet
-  composer card import -f apay.card
+  #composer card import -f apay.card
 
   # Test the business network access of Infrastructure Pay user
-  composer network ping -c apay@upgrad-network
+  #composer network ping -c apay@upgrad-network
 }
 
 function updateChaincode() {
@@ -282,7 +282,7 @@ function networkDown() {
   if [ "$MODE" != "restart" ]; then
     # Bring down the network, deleting the volumes
     #Delete any ledger backups
-    docker run -v "$PWD":/tmp/channelthreeorgs --rm hyperledger/fabric-tools:"$IMAGETAG" rm -Rf /tmp/channelthreeorgs/ledgers-backup
+    docker run -v "$PWD":/tmp/channelfiveorgs --rm hyperledger/fabric-tools:"$IMAGETAG" rm -Rf /tmp/channelfiveorgs/ledgers-backup
     #Cleanup the chaincode containers
     clearContainers
     #Cleanup images
@@ -567,7 +567,7 @@ IMAGETAG="latest"
 # default consensus type
 CONSENSUS_TYPE="kafka"
 # default couch DB
-IF_COUCHDB="couchdb"
+IF_COUCHDB="false"
 # Parse commandline args
 if [ "$1" = "-m" ]; then # supports old usage, muscle memory is powerful!
   shift

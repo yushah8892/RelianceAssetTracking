@@ -3,19 +3,31 @@
     {
       "role": {
         "name": "member",
-        "mspId": "AmazonMSP"
+        "mspId": "InfrastructureMSP"
       }
     },
     {
       "role": {
         "name": "member",
-        "mspId": "FlipkartMSP"
+        "mspId": "PowerMSP"
       }
     },
     {
       "role": {
         "name": "member",
-        "mspId": "PayTMMSP"
+        "mspId": "CommunicationsMSP"
+      }
+    },
+     {
+      "role": {
+        "name": "member",
+        "mspId": "EntertainmentMSP"
+      }
+    },
+     {
+      "role": {
+        "name": "member",
+        "mspId": "CapitalMSP"
       }
     }
   ],
