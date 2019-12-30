@@ -2,7 +2,7 @@
 Sample code to test Hyperledger Composer .bna deployment over Hyperledger Fabric network
 
 ## Fabric Network
-- 5 Orgs
+- 3 Orgs
 - TLS Enabled
 - 2 Peers per org
 
